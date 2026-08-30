@@ -16,6 +16,11 @@
 # next.js
 /.next/
 /out/
+# Cache viejo de Turbopack (depuración del CSP)
+/.next-old/
+/.next-old*/
+# Assets fuente (los frames ya están extraídos en /public/frames/)
+/public/assets/hero-*.mp4
 
 # production
 /build
