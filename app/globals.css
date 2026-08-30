@@ -1,26 +1,73 @@
 @import "tailwindcss";
 
+/* En Tailwind 4 el `dark:` se activa automáticamente cuando el sistema está
+   en modo oscuro. Para Moly Travel NO queremos eso (la marca es cálida,
+   un fondo oscuro rompe la sensación). Con este `custom-variant` el
+   prefijo `dark:` SOLO se aplica si una clase `.dark` está en un ancestro
+   del elemento — es decir, el modo oscuro queda apagado por defecto. Si
+   en F1 lo necesitamos, lo prendemos manualmente agregando `className="dark"`
+   al <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
+   PALETA DE MARCA — Moly Travel
+   ==========================================================================
+   Decisión de diseño (sesión 2026-08-29):
+   - Color base de marca: #33c6b5 (teal vibrante, tomado de la referencia
+     NavikX que aprobó Rubén). Lo usamos como acento en CTAs, links y
+     detalles — no como fondo principal.
+   - Fondo principal: cream cálido (#faf6ee). Refleja la promesa de
+     "calidez + tranquilidad" y diferencia Moly Travel del típico travel
+     site con fondo blanco clínico.
+   - Texto principal: charcoal teal-tinted (#1a2e2c). Contraste AA con
+     el cream para legibilidad.
+   - No soportamos dark mode en F0: la identidad de marca es cálida, un
+     fondo oscuro rompería la sensación. Si en F1 lo necesitamos, lo
+     agregamos con un par de variables adicionales.
+   ========================================================================== */
+
+@theme {
+  /* Escala teal (alrededor de #33c6b5). Uso: `bg-brand-400`, `text-brand-600`, etc. */
+  --color-brand-50:  #e6f7f5;
+  --color-brand-100: #c2ebe6;
+  --color-brand-200: #8fdcd0;
+  --color-brand-300: #5ccdba;
+  --color-brand-400: #33c6b5;  /* Color base que pediste */
+  --color-brand-500: #1ba698;
+  --color-brand-600: #0e857a;
+  --color-brand-700: #0a645c;
+  --color-brand-800: #07433e;
+  --color-brand-900: #042220;
+
+  /* Escala cream cálida. Uso: `bg-cream-100`, `border-cream-200`, etc. */
+  --color-cream-50:  #fdfaf3;
+  --color-cream-100: #faf6ee;  /* Fondo principal */
+  --color-cream-200: #f0e8d6;
+  --color-cream-300: #e0d4b8;
+  --color-cream-400: #c8b894;
+
+  /* Escala charcoal (textos y elementos oscuros). */
+  --color-charcoal-500: #5a6e6c;
+  --color-charcoal-600: #3e524f;
+  --color-charcoal-700: #2d3e3c;
+  --color-charcoal-800: #1a2e2c;  /* Texto principal */
+  --color-charcoal-900: #0e1c1b;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf6ee;  /* cream-100 */
+  --foreground: #1a2e2c;  /* charcoal-800 */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Apuntamos --font-sans a Bricolage Grotesque (la variable viene de layout.tsx). */
+  --font-sans: var(--font-bricolage);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "maria-andres",
+    "quote": "Pensamos que organizar unas vacaciones era estresante. Moly nos demostró lo contrario. Cada detalle cuidado, cada imprevisto resuelto antes de que lo notáramos.",
+    "author": "María y Andrés",
+    "trip": "Luna de miel en Grecia"
+  },
+  {
+    "id": "familia-rojas",
+    "quote": "Fuimos con los niños (5 y 8 años) y nos daba miedo que se aburrieran. Regresamos con tres álbumes de fotos y los niños hablando de los guías como si fueran tíos.",
+    "author": "Familia Rojas",
+    "trip": "Costa Rica en familia"
+  },
+  {
+    "id": "carla",
+    "quote": "Lo que más me gustó fue que nunca me sentí un número. Hablamos con la misma persona de principio a fin, y eso se nota en los detalles.",
+    "author": "Carla M.",
+    "trip": "Japón independiente"
+  },
+  {
+    "id": "javier",
+    "quote": "Aniversario número 25. Quería sorprender a mi esposa con algo especial. Lo que armaron superó lo que imaginé. Todavía lo platicamos.",
+    "author": "Javier S.",
+    "trip": "Aniversario en Toscana"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "humana",
+    "number": "01",
+    "title": "Selección humana",
+    "description": "Cada hotel, actividad y guía pasa por una persona real, no un algoritmo."
+  },
+  {
+    "id": "historia",
+    "number": "02",
+    "title": "Hoteles con historia",
+    "description": "Evitamos cadenas genéricas. Preferimos lugares con dueño local, arquitectura con alma, o una historia que contar."
+  },
+  {
+    "id": "sin-prisa",
+    "number": "03",
+    "title": "Tiempo sin prisa",
+    "description": "Los itinerarios tienen mañanas libres, siestas posibles y cenas largas. Viajar no es una carrera."
+  },
+  {
+    "id": "transparente",
+    "number": "04",
+    "title": "Presupuesto transparente",
+    "description": "Te decimos exactamente qué incluye cada peso. Sin suplementos ni sorpresas en destino."
+  }
+]
