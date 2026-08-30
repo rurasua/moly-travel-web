@@ -199,6 +199,15 @@ export function HeroScrollytelling({
         aria-hidden="true"
       />
 
+      {/* Scrim cream uniforme — aclara el video para que el texto de cualquier
+          overlay lea bien, sin importar su posición (izq/centro/der) ni el
+          momento del scroll. Antes era un gradiente horizontal y eso dejaba
+          los overlays centrados sin protección. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-cream-100/55 pointer-events-none"
+      />
+
       {/* Overlays: cada uno con su id para que el rAF loop actualice opacidad */}
       {overlays.map((overlay) => (
         <div

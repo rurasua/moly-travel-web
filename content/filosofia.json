@@ -1,26 +1,26 @@
 [
   {
-    "id": "humana",
-    "number": "01",
-    "title": "Selección humana",
-    "description": "Cada hotel, actividad y guía pasa por una persona real, no un algoritmo."
+    "id": "calidad",
+    "number": "1",
+    "title": "Calidad primero",
+    "description": "Seleccionamos proveedores verificados, con historial comprobable. Tu seguridad y comodidad no son opcionales. Si un hotel o un tour no cumple nuestro estándar, no lo ofrecemos, por más barato que sea."
   },
   {
-    "id": "historia",
-    "number": "02",
-    "title": "Hoteles con historia",
-    "description": "Evitamos cadenas genéricas. Preferimos lugares con dueño local, arquitectura con alma, o una historia que contar."
+    "id": "precio",
+    "number": "2",
+    "title": "Precio honesto",
+    "description": "Si encontramos una opción mejor para tu presupuesto, te la decimos. No inflamos para ganar más ni te dejamos pagar de más por algo que podrías conseguir igual por menos. La honestidad también es parte del servicio."
   },
   {
-    "id": "sin-prisa",
-    "number": "03",
-    "title": "Tiempo sin prisa",
-    "description": "Los itinerarios tienen mañanas libres, siestas posibles y cenas largas. Viajar no es una carrera."
+    "id": "exclusivos",
+    "number": "3",
+    "title": "Paquetes exclusivos",
+    "description": "Accesos y experiencias que no están en los catálogos masivos. Las conseguimos a través de relaciones construidas con años, no con algoritmos. Eso significa cosas que el turista promedio no consigue."
   },
   {
-    "id": "transparente",
-    "number": "04",
-    "title": "Presupuesto transparente",
-    "description": "Te decimos exactamente qué incluye cada peso. Sin suplementos ni sorpresas en destino."
+    "id": "a-medida",
+    "number": "4",
+    "title": "A la medida, de verdad",
+    "description": "No armamos paquetes genéricos. Cada itinerario se construye escuchando lo que tú quieres, no imponiendo lo que el catálogo ofrece. Si sueñas con algo, lo hacemos posible (o te decimos si no se puede, antes de que pagues)."
   }
 ]
