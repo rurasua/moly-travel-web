@@ -213,7 +213,7 @@ export function HeroScrollytelling({
         <div
           key={overlay.id}
           id={`overlay-${overlay.id}`}
-          className="absolute inset-0 flex items-center pointer-events-none"
+          className="absolute inset-0 flex items-start pt-24 md:pt-32 pointer-events-none"
           style={{
             opacity: 0,
             justifyContent:
@@ -222,7 +222,9 @@ export function HeroScrollytelling({
                 : overlay.align === "center"
                   ? "center"
                   : "flex-start",
-            padding: "0 clamp(24px, 6vw, 96px)",
+            paddingLeft: "clamp(24px, 6vw, 96px)",
+            paddingRight: "clamp(24px, 6vw, 96px)",
+            paddingBottom: "clamp(48px, 8vh, 96px)",
           }}
         >
           {overlay.content}
