@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 
@@ -13,6 +13,15 @@ const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   display: "swap",
 });
+
+// Viewport mobile: sin esto, los navegadores móviles renderizan la página
+// como si fuera de 980px de ancho (modo "shrink-to-fit") y rompen todos los
+// media queries de Tailwind (md:flex, md:hidden, etc.). Con este meta, el
+// viewport = ancho real del dispositivo y los media queries funcionan bien.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 // Metadata que aparece en la pestaña del navegador y en los resultados de Google.
 // Lo dejamos listo en español desde el día 1; el dominio final lo agregamos cuando esté definido.
