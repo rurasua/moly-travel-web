@@ -9,33 +9,41 @@ import { SigueSonando } from "@/components/SigueSonando";
 // =============================================================================
 // LANDING — Moly Travel
 // =============================================================================
-// Estructura: UNA sección scrollable (#story) de 500vh que contiene el
-// scrollytelling completo (canvas + textos como overlays). El canvas está
-// fijo, los textos aparecen/desaparecen según el progreso del scroll.
+// Estructura nueva (scroll 100%):
+//   - Canvas (HeroScrollytelling) está FIXED al viewport, siempre visible.
+//   - Container #story tiene 600vh = 6 sections de 100vh cada una.
+//   - Cada section es un bloque real en el flujo del documento, corre con
+//     scroll natural. El rAF del canvas solo actualiza opacidad/transform
+//     sutil para suavizar la transición.
 //
 //   0-100vh   → Hero "¿Por qué no?" + CTA único
 //   100-200vh → Prueba Social (testimonios)
 //   200-300vh → Filosofía (4 filtros de selección)
-//   300-400vh → Sigue Soñando (form) + Acompañamiento 360° (antes/durante/después)
-//   400-500vh → Contacto directo (WhatsApp + correo)
+//   300-400vh → Sigue Soñando (form)
+//   400-500vh → Acompañamiento 360°
+//   500-600vh → Contacto directo (WhatsApp + correo)
 //
-// Copy y orden basados en el documento F0 (06-index-html-estructura.md).
-// Patrón visual LUCENT: https://white-goldfish-912062.hostingersite.com/index-scrim.html
+// Copy basado en el doc F0 (06-index-html-estructura.md).
 // =============================================================================
 
-// Definición de los overlays. Las ventanas (start/peakStart/peakEnd/end)
-// están en progreso del scroll (0-1) a lo largo de los 500vh.
-// Cada sección "vive" ~22% del scroll con un fade in/out corto.
+// Definición de los overlays. El container #story mide 600vh (6 sections de
+// 100vh). Los peaks están centrados en cada section:
+//   Section 1 (0-100vh)   peak ≈ 0.083  →  inicio
+//   Section 2 (100-200vh) peak ≈ 0.250  →  testimonios
+//   Section 3 (200-300vh) peak ≈ 0.417  →  filosofia
+//   Section 4 (300-400vh) peak ≈ 0.583  →  sigue-sonando
+//   Section 5 (400-500vh) peak ≈ 0.750  →  acompanamiento
+//   Section 6 (500-600vh) peak ≈ 0.917  →  contacto
 const overlays: OverlaySlot[] = [
-  // ---------------------------------------------------------------------------
-  // HERO — "decisión memorando: CTA único + sin saturar"
-  // ---------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // 1. HERO
+  // -------------------------------------------------------------------------
   {
     id: "inicio",
-    start: 0,
-    peakStart: 0.04,
-    peakEnd: 0.18,
-    end: 0.22,
+    start: 0.02,
+    peakStart: 0.06,
+    peakEnd: 0.10,
+    end: 0.15,
     align: "center",
     content: (
       <div className="max-w-2xl text-center">
@@ -63,63 +71,63 @@ const overlays: OverlaySlot[] = [
       </div>
     ),
   },
-  // ---------------------------------------------------------------------------
-  // PRUEBA SOCIAL — "Familias y amigos que ya viajaron con nosotros"
-  // ---------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // 2. PRUEBA SOCIAL
+  // -------------------------------------------------------------------------
   {
     id: "testimonios",
-    start: 0.18,
-    peakStart: 0.24,
-    peakEnd: 0.38,
-    end: 0.42,
+    start: 0.19,
+    peakStart: 0.23,
+    peakEnd: 0.27,
+    end: 0.31,
     align: "center",
     content: <Testimonios />,
   },
-  // ---------------------------------------------------------------------------
-  // FILOSOFÍA DE SELECCIÓN — "Cómo elegimos por ti" (4 filtros)
-  // ---------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // 3. FILOSOFÍA
+  // -------------------------------------------------------------------------
   {
     id: "filosofia",
-    start: 0.38,
-    peakStart: 0.44,
-    peakEnd: 0.58,
-    end: 0.62,
+    start: 0.36,
+    peakStart: 0.40,
+    peakEnd: 0.44,
+    end: 0.48,
     align: "center",
     content: <Filosofia />,
   },
-  // ---------------------------------------------------------------------------
-  // SIGUE SOÑANDO — captura pasiva (form email + WhatsApp)
-  // ---------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // 4. SIGUE SOÑANDO
+  // -------------------------------------------------------------------------
   {
     id: "sigue-sonando",
-    start: 0.58,
-    peakStart: 0.62,
-    peakEnd: 0.72,
-    end: 0.76,
+    start: 0.53,
+    peakStart: 0.57,
+    peakEnd: 0.61,
+    end: 0.64,
     align: "center",
     content: <SigueSonando />,
   },
-  // ---------------------------------------------------------------------------
-  // ACOMPAÑAMIENTO 360° — Ilusión · Tranquilidad · Gratitud
-  // ---------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // 5. ACOMPAÑAMIENTO 360°
+  // -------------------------------------------------------------------------
   {
     id: "acompanamiento",
-    start: 0.74,
-    peakStart: 0.78,
-    peakEnd: 0.88,
-    end: 0.92,
+    start: 0.70,
+    peakStart: 0.73,
+    peakEnd: 0.77,
+    end: 0.80,
     align: "center",
     content: <Acompanamiento />,
   },
-  // ---------------------------------------------------------------------------
-  // CONTACTO DIRECTO — "¿Listo para empezar?" (WhatsApp + correo)
-  // ---------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // 6. CONTACTO DIRECTO
+  // -------------------------------------------------------------------------
   {
     id: "contacto",
-    start: 0.92,
-    peakStart: 0.96,
-    peakEnd: 1.0,
-    end: 1.0,
+    start: 0.86,
+    peakStart: 0.90,
+    peakEnd: 0.94,
+    end: 0.97,
     align: "center",
     content: (
       <div className="max-w-2xl text-center pointer-events-auto">
@@ -154,31 +162,50 @@ const overlays: OverlaySlot[] = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-charcoal-900 text-cream-50 font-sans">
+    <main className="bg-charcoal-900 text-cream-50 font-sans">
       {/* ----------------------------------------------------------------------
           HEADER — logo + nav (componente client con menú hamburguesa móvil)
           ---------------------------------------------------------------------- */}
       <Header />
 
       {/* ----------------------------------------------------------------------
-          SCROLLYTELLING — 500vh con canvas + 6 overlays
+          CANVAS FIXED — siempre visible, ocupa todo el viewport. El rAF
+          cambia el frame según el scroll del container #story.
           ---------------------------------------------------------------------- */}
-      <section id="story" className="relative h-[500vh]">
-        <div className="sticky top-0 h-screen w-full overflow-hidden">
-          <HeroScrollytelling
-            containerId="story"
-            overlays={overlays}
-          />
-        </div>
+      <div className="fixed inset-0 w-full h-full z-0">
+        <HeroScrollytelling
+          containerId="story"
+          overlays={overlays}
+        />
+      </div>
+
+      {/* ----------------------------------------------------------------------
+          SECTIONS — 6 bloques de 100vh cada uno (600vh total). Corren con
+          scroll natural, ENCIMA del canvas fixed. Sin fade: siempre visibles
+          cuando están en el viewport. Contenido centrado vertical y horizontal.
+          ---------------------------------------------------------------------- */}
+      <section id="story" className="relative z-10">
+        {overlays.map((overlay) => (
+          <section
+            key={overlay.id}
+            id={`overlay-${overlay.id}`}
+            className="h-screen flex items-center justify-center pointer-events-none"
+            style={{
+              paddingLeft: "clamp(24px, 6vw, 96px)",
+              paddingRight: "clamp(24px, 6vw, 96px)",
+              paddingBottom: "48px",
+            }}
+          >
+            {overlay.content}
+          </section>
+        ))}
       </section>
 
       {/* ----------------------------------------------------------------------
-          FOOTER (queda fuera del scrollytelling, al final de la página)
-          Decisión memorando: link discreto al Portal Privado
+          FOOTER — queda fuera del scrollytelling
           ---------------------------------------------------------------------- */}
       <footer className="bg-charcoal-900 border-t border-charcoal-700/50">
         <div className="px-6 py-12 md:px-20 max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-cream-50/70">
-          {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <span className="text-cream-50 font-semibold tracking-tight">
               Moly Travel
@@ -187,8 +214,6 @@ export default function Home() {
               Agencia de viajes personalizada.
             </p>
           </div>
-
-          {/* Contacto */}
           <div>
             <h3 className="text-cream-50 font-semibold mb-3">Contacto</h3>
             <ul className="space-y-2">
@@ -211,8 +236,6 @@ export default function Home() {
               <li>México</li>
             </ul>
           </div>
-
-          {/* Sitio */}
           <div>
             <h3 className="text-cream-50 font-semibold mb-3">Sitio</h3>
             <ul className="space-y-2">
@@ -238,8 +261,6 @@ export default function Home() {
               </li>
             </ul>
           </div>
-
-          {/* Portal privado */}
           <div>
             <h3 className="text-cream-50 font-semibold mb-3">
               ¿Ya viajas con nosotros?
@@ -258,7 +279,6 @@ export default function Home() {
             </p>
           </div>
         </div>
-
         <div className="px-6 md:px-20 py-6 border-t border-charcoal-700/50 text-xs text-cream-50/50 flex flex-col md:flex-row justify-between gap-3 max-w-6xl mx-auto">
           <span>© 2026 Moly Travel. Todos los derechos reservados.</span>
           <span>

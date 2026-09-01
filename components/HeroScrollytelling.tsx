@@ -54,6 +54,30 @@ function getStageOpacity(
   return 1 - (p - peakEnd) / (end - peakEnd);
 }
 
+// Función de transform: el texto entra desde abajo (Y positivo) y se va
+// hacia arriba (Y negativo) según el progreso del scroll. En el peak queda
+// en Y=0. Esto da la sensación de que el texto "se mueve" con el scroll,
+// no solo aparece/desaparece con fade.
+function getStageTransform(
+  p: number,
+  start: number,
+  peakStart: number,
+  peakEnd: number,
+  end: number,
+  distance = 40
+): string {
+  if (p < start || p > end) return `translateY(${distance}px)`;
+  if (p < peakStart) {
+    const t = (p - start) / (peakStart - start);
+    return `translateY(${(distance * (1 - t)).toFixed(1)}px)`;
+  }
+  if (p > peakEnd) {
+    const t = (p - peakEnd) / (end - peakEnd);
+    return `translateY(${(-distance * t).toFixed(1)}px)`;
+  }
+  return "translateY(0px)";
+}
+
 export function HeroScrollytelling({
   containerId,
   overlays = [],
@@ -132,23 +156,8 @@ export function HeroScrollytelling({
       ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
     };
 
-    // Actualizar opacidad de cada overlay según el progreso
-    const updateOverlays = (progress: number) => {
-      overlays.forEach((overlay) => {
-        const el = document.getElementById(`overlay-${overlay.id}`);
-        if (el) {
-          el.style.opacity = String(
-            getStageOpacity(
-              progress,
-              overlay.start,
-              overlay.peakStart,
-              overlay.peakEnd,
-              overlay.end
-            )
-          );
-        }
-      });
-    };
+    // Las sections se renderizan en el padre y corren con scroll natural,
+    // siempre visibles (sin fade). El rAF solo actualiza el frame del canvas.
 
     const onScroll = () => {
       const container = document.getElementById(containerId);
@@ -156,10 +165,12 @@ export function HeroScrollytelling({
       const rect = container.getBoundingClientRect();
       const containerHeight = rect.height;
       const scrolled = -rect.top;
-      const scrollable = containerHeight - window.innerHeight;
+      // Progress basado en la altura TOTAL del container (no el scrollable).
+      // Así cada sección de 100vh dentro de un container de 600vh tiene su
+      // peak en 50vh, 150vh, 250vh... que caen en 0.083, 0.25, 0.417, etc.
       const progress =
-        scrollable > 0
-          ? Math.max(0, Math.min(1, scrolled / scrollable))
+        containerHeight > 0
+          ? Math.max(0, Math.min(1, scrolled / containerHeight))
           : 0;
       state.targetFrame = progress * (totalFrames - 1);
     };
@@ -173,8 +184,6 @@ export function HeroScrollytelling({
         state.currentFrame = state.targetFrame;
         drawFrame(state.currentFrame);
       }
-      const progress = state.currentFrame / (totalFrames - 1);
-      updateOverlays(progress);
       state.rafId = requestAnimationFrame(tick);
     };
 
@@ -207,29 +216,6 @@ export function HeroScrollytelling({
         aria-hidden="true"
         className="absolute inset-0 bg-cream-100/55 pointer-events-none"
       />
-
-      {/* Overlays: cada uno con su id para que el rAF loop actualice opacidad */}
-      {overlays.map((overlay) => (
-        <div
-          key={overlay.id}
-          id={`overlay-${overlay.id}`}
-          className="absolute inset-0 flex items-start pt-24 md:pt-32 pointer-events-none"
-          style={{
-            opacity: 0,
-            justifyContent:
-              overlay.align === "right"
-                ? "flex-end"
-                : overlay.align === "center"
-                  ? "center"
-                  : "flex-start",
-            paddingLeft: "clamp(24px, 6vw, 96px)",
-            paddingRight: "clamp(24px, 6vw, 96px)",
-            paddingBottom: "clamp(48px, 8vh, 96px)",
-          }}
-        >
-          {overlay.content}
-        </div>
-      ))}
 
       {!isReady && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
