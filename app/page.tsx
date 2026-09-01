@@ -180,19 +180,22 @@ export default function Home() {
       </div>
 
       {/* ----------------------------------------------------------------------
-          SECTIONS — 6 bloques de 100vh cada uno (600vh total). Corren con
-          scroll natural, ENCIMA del canvas fixed. Sin fade: siempre visibles
-          cuando están en el viewport. Contenido centrado vertical y horizontal.
+          SECTIONS — 6 bloques de min-h-[130vh] cada uno (~780vh total). Corren
+          con scroll natural, ENCIMA del canvas fixed. Sin fade: siempre
+          visibles cuando están en el viewport. overflow-hidden evita que
+          el contenido alto (Filosofía con 4 cards, Acompañamiento con 3
+          cards) se empalme con la siguiente sección.
           ---------------------------------------------------------------------- */}
       <section id="story" className="relative z-10">
         {overlays.map((overlay) => (
           <section
             key={overlay.id}
             id={`overlay-${overlay.id}`}
-            className="h-screen flex items-center justify-center pointer-events-none"
+            className="min-h-[130vh] flex items-center justify-center pointer-events-none overflow-hidden"
             style={{
               paddingLeft: "clamp(24px, 6vw, 96px)",
               paddingRight: "clamp(24px, 6vw, 96px)",
+              paddingTop: "48px",
               paddingBottom: "48px",
             }}
           >
@@ -202,9 +205,11 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------------------------
-          FOOTER — queda fuera del scrollytelling
+          FOOTER — queda fuera del scrollytelling. relative z-10 para que
+          esté ENCIMA del canvas fixed (que está en z-0); si no, el canvas
+          lo tapa visualmente.
           ---------------------------------------------------------------------- */}
-      <footer className="bg-charcoal-900 border-t border-charcoal-700/50">
+      <footer className="relative z-10 bg-charcoal-900 border-t border-charcoal-700/50">
         <div className="px-6 py-12 md:px-20 max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-cream-50/70">
           <div className="col-span-2 md:col-span-1">
             <span className="text-cream-50 font-semibold tracking-tight">
